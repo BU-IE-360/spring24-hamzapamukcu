@@ -3,8 +3,8 @@
 My name is Hamza and this is my page for the course IE360. My homeworks and my project for this course will be available in this page. 
 
 ### Homework 1
-[My First Homework Html File](https://github.com/BU-IE-360/spring24-hamzapamukcu/blob/main/Hamza-Pamukc%CC%A7u-HW1.html)
+[My First Homework Html File](https://bu-ie-360.github.io/spring24-hamzapamukcu/Hamza-Pamukçu-HW1.html)
 
-[My First Homework Rmd File](https://github.com/BU-IE-360/spring24-hamzapamukcu/blob/main/Hamza%20Pamukc%CC%A7u%20HW1.Rmd)
+[My First Homework Rmd File](https://bu-ie-360.github.io/spring24-hamzapamukcu/Hamza%20Pamukçu%20HW1.Rmd)
 
-[My First PDF Html File](https://github.com/BU-IE-360/spring24-hamzapamukcu/blob/main/Hamza-Pamukc%CC%A7u-HW1.pdf)
+[My First PDF Html File](https://bu-ie-360.github.io/spring24-hamzapamukcu/Hamza-Pamukçu-HW1.pdf)
