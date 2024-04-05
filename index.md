@@ -1,5 +1,3 @@
-
-```
 ## Welcome to My GitHub Page
 
 My name is Hamzaa and this is my page for the course IE360. My homeworks and my project for this course will be available in this page. 
@@ -12,13 +10,13 @@ My name is Hamzaa and this is my page for the course IE360. My homeworks and my 
 [PDF of HTML](https://github.com/BU-IE-360/spring24-hamzapamukcu/blob/main/IE%20360%20HW1/Hamza-Pamukc%CC%A7u-HW1.pdf)
 
 
-```
+
 
 For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
 
 ### Jekyll Themes
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your repository settings. The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+Your Pages site will use the layout and styles from the Jekyll theme you have selected in your repository settings. The name of this theme is saved in the Jekyll _config.yml configuration file.
 
 ### Support or Contact
 
