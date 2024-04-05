@@ -1,0 +1,277 @@
+---
+title: "360HW1"
+author: "Hamza Pamukçu"
+date: "2024-03-22"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+
+```{r}
+require(data.table)
+require(lubridate)
+require(forecast)
+require(skimr)
+require(repr)
+require(openxlsx) 
+require(ggplot2)
+require(data.table)
+require(skimr)
+require(GGally)
+require(ggcorrplot)
+require(forecast)
+```
+## Correlation between my forecast time series
+
+The correlation between forecast variables are lower than 0.5
+
+```{r}
+data_path="/Users/hamzapamukcu/Desktop/Correlation.xlsx"
+cor=read.xlsx(data_path)
+ggpairs(cor)
+```
+
+```{r}
+options(repr.plot.width=12.7, repr.plot.height=8.5)
+
+data_path="/Users/hamzapamukcu/Desktop/dolar_fiyat_endeksi.xlsx"
+dolar=read.xlsx(data_path)
+head(dolar,5)
+str(dolar)
+```
+```{r}
+require(lubridate)
+dolar$Tarih <- as.Date(dolar$Tarih,origin = lubridate::origin)
+head(dolar)
+```
+
+
+Dollar exchange rate and consumer price index time series (data start date is 01/2016 and end date is 01/2024, but it appears as 2086 in R)
+
+```{r}
+data_path="/Users/hamzapamukcu/Desktop/İssizzlik-istdihdam.xlsx"
+is=read.xlsx(data_path)
+head(is,5)
+str(is)
+```
+```{r}
+is$Tarih <- as.Date(is$Tarih,origin = lubridate::origin)
+head(is)
+```
+
+
+Employment Rate and Unemployment Rate time series (data start date is 01/2016 and end date is 01/2024, but it appears as 2086 in R)
+```{r}
+data_path="/Users/hamzapamukcu/Desktop/Altın üretimi-tüketimi.xlsx"
+altin=read.xlsx(data_path)
+head(altin,5)
+str(altin)
+```
+```{r}
+altin$Tarih <- as.Date(altin$Tarih,origin = lubridate::origin)
+head(altin)
+```
+
+
+"Gold production of mining companies traded on BIST" and "Accessory Gold Demand of Consumers" time series (data start date is 01/2016 and end date is 01/2024, but it appears as 2086 in R)
+```{r}
+ggplot(dolar ,aes(x=Tarih,y=dolar$TP.DK.USD.A.YTL)) + geom_line()
+ggplot(dolar ,aes(x=Tarih,y=dolar$TP.FG.J0)) + geom_line()
+```
+
+
+"Dollar exchange rate" and "consumer price index" time series' gq plots (data start date is 01/2016 and end date is 01/2024, but it appears as 2086 in R)
+```{r}
+ggplot(is ,aes(x=Tarih,y=is$TP.YISGUCU2.G8)) + geom_line()
+ggplot(is ,aes(x=Tarih,y=is$TP.YISGUCU2.G7)) + geom_line()
+```
+
+
+Employment Rate and Unemployment Rate time series' gq plot (data start date is 01/2016 and end date is 01/2024, but it appears as 2086 in R)
+```{r}
+ggplot(altin ,aes(x=Tarih,y=altin$TP.URALTIN.ALTINKG)) + geom_line()
+ggplot(altin ,aes(x=Tarih,y=altin$TP.ALTINGR.TOPL3)) + geom_line()
+```
+
+
+"Gold production of mining companies traded on BIST" and "Accessory Gold Demand of Consumers" time series' gq plots (data start date is 01/2016 and end date is 01/2024, but it appears as 2086 in R)
+```{r}
+require(GGally)
+ggpairs(dolar)
+```
+```{r}
+ggpairs(is)
+```
+```{r}
+ggpairs(altin)
+```
+
+```{r}
+ggplot(dolar ,aes(x=Tarih,y=dolar$TP.DK.USD.A.YTL)) + geom_point()+geom_smooth(method='lm')
+ggplot(altin ,aes(x=Tarih,y=altin$TP.URALTIN.ALTINKG)) + geom_point()+geom_smooth(method='lm')
+ggplot(is ,aes(x=Tarih,y=is$TP.YISGUCU2.G8)) + geom_point()+geom_smooth(method='lm')
+```
+
+
+"Gold production of mining companies traded on BIST" ,  "Unemployment Rate" and "Dollar exchange rate" time series' trends 
+```{r}
+acf(dolar$TP.DK.USD.A.YTL)
+acf(is$TP.YISGUCU2.G8)
+acf(altin$TP.URALTIN.ALTINKG)
+```
+
+
+"Gold production of mining companies traded on BIST" , "Unemployment Rate" and "Dollar exchange rate" time series' auto correlation functions
+```{r}
+dolar <- as.data.table(dolar)
+dolar[,trnd:=1:.N]
+dolar[,ay:=as.character(month(Tarih,label=T))]
+head(dolar)
+```
+
+
+Dummy variable added to apply seasonality to "Dollar exchange rate" time series
+```{r}
+is <- as.data.table(is)
+is[,trnd:=1:.N]
+is[,ay:=as.character(month(Tarih,label=T))]
+head(is)
+```
+
+
+Dummy variable added to apply seasonality to "Unemployment Rate" time series
+```{r}
+altin <- as.data.table(altin)
+altin[,trnd:=1:.N]
+altin[,ay:=as.character(month(Tarih,label=T))]
+head(altin)
+```
+Dummy variable added to apply seasonality to "Gold production of mining companies traded on BIST" time series
+```{r}
+ggplot(dolar,aes(x=Tarih,y=dolar$TP.DK.USD.A.YTL)) +
+        geom_point() + geom_smooth(method=lm,linewidth=3) + facet_wrap(~ay)
+ggplot(is,aes(x=Tarih,y=is$TP.YISGUCU2.G8)) +
+        geom_point() + geom_smooth(method=lm,linewidth=3) + facet_wrap(~ay)
+ggplot(altin,aes(x=Tarih,y=altin$TP.URALTIN.ALTINKG)) +
+        geom_point() + geom_smooth(method=lm,linewidth=3) + facet_wrap(~ay)
+```
+
+
+Seasonality was applied to the time series "Unemployment Rate", "Dollar exchange rate" and "Gold production of mining companies traded on BIST".
+
+```{r}
+lm_base=lm(TP.DK.USD.A.YTL~trnd+ay,dolar)
+summary(lm_base)
+checkresiduals(lm_base$residuals)
+tmp=copy(dolar)
+tmp[,actual:=TP.DK.USD.A.YTL]
+tmp[,predicted_trend:=predict(lm_base,tmp)]
+tmp[,residual_trend:=actual-predicted_trend]
+#head(tmp)
+ggplot(tmp ,aes(x=Tarih)) +
+        geom_line(aes(y=actual,color='real')) + 
+        geom_line(aes(y=predicted_trend,color='predicted'))
+```
+
+
+A regression model to forecast "Dollar Exchange Rate", using seasonality and trend that been found earlier.
+```{r}
+lm_base=lm(TP.DK.USD.A.YTL~trnd+ay+dolar$TP.FG.J0,dolar)
+summary(lm_base)
+checkresiduals(lm_base$residuals)
+tmp=copy(dolar)
+tmp[,actual:=TP.DK.USD.A.YTL]
+tmp[,predicted_trend:=predict(lm_base,tmp)]
+tmp[,residual_trend:=actual-predicted_trend]
+#head(tmp)
+ggplot(tmp ,aes(x=Tarih)) +
+        geom_line(aes(y=actual,color='real')) + 
+        geom_line(aes(y=predicted_trend,color='predicted'))
+```
+
+
+"Consumer Price Index" time series added as a predictor variable to the regression model to forecast "Dollar Exchange Rate", using seasonality and trend that been found earlier. New regression model has established
+```{r}
+lm_base=lm(is$TP.YISGUCU2.G8~trnd+ay,is)
+summary(lm_base)
+checkresiduals(lm_base$residuals)
+tmp=copy(is)
+tmp[,actual:=TP.YISGUCU2.G8]
+tmp[,predicted_trend:=predict(lm_base,tmp)]
+tmp[,residual_trend:=actual-predicted_trend]
+#head(tmp)
+ggplot(tmp ,aes(x=Tarih)) +
+        geom_line(aes(y=actual,color='real')) + 
+        geom_line(aes(y=predicted_trend,color='predicted'))
+```
+
+
+A regression model to forecast "Unemployment Rate", using seasonality and trend that been found earlier.
+```{r}
+lm_base=lm(is$TP.YISGUCU2.G8~trnd+ay+is$TP.YISGUCU2.G7,is)
+summary(lm_base)
+checkresiduals(lm_base$residuals)
+tmp=copy(is)
+tmp[,actual:=TP.YISGUCU2.G8]
+tmp[,predicted_trend:=predict(lm_base,tmp)]
+tmp[,residual_trend:=actual-predicted_trend]
+#head(tmp)
+ggplot(tmp ,aes(x=Tarih)) +
+        geom_line(aes(y=actual,color='real')) + 
+        geom_line(aes(y=predicted_trend,color='predicted'))
+```
+
+
+"Employment Rate" time series added as a predictor variable to the regression model to forecast "Unemployment Rate", using seasonality and trend that been found earlier. New regression model has established
+```{r}
+lm_base=lm(altin$TP.URALTIN.ALTINKG~trnd+ay,altin)
+summary(lm_base)
+checkresiduals(lm_base$residuals)
+tmp=copy(altin)
+tmp[,actual:=TP.URALTIN.ALTINKG]
+tmp[,predicted_trend:=predict(lm_base,tmp)]
+tmp[,residual_trend:=actual-predicted_trend]
+#head(tmp)
+ggplot(tmp ,aes(x=Tarih)) +
+        geom_line(aes(y=actual,color='real')) + 
+        geom_line(aes(y=predicted_trend,color='predicted'))
+```
+
+
+A regression model to forecast "Gold production of mining companies traded on BIST", using seasonality and trend that been found earlier.
+```{r}
+lm_base=lm(TP.URALTIN.ALTINKG~trnd+ay+TP.ALTINGR.TOPL3,altin)
+summary(lm_base)
+checkresiduals(lm_base$residuals)
+tmp=copy(altin)
+tmp[,actual:=TP.URALTIN.ALTINKG]
+tmp[,predicted_trend:=predict(lm_base,tmp)]
+tmp[,residual_trend:=actual-predicted_trend]
+#head(tmp)
+ggplot(tmp ,aes(x=Tarih)) +
+        geom_line(aes(y=actual,color='real')) + 
+        geom_line(aes(y=predicted_trend,color='predicted'))
+```
+
+
+"Accessory Gold Demand of Consumers" time series added as a predictor variable to the regression model to forecast "Gold production of mining companies traded on BIST", using seasonality and trend that been found earlier. New regression model has established
+
+## Results and Analysis
+
+In the assignment, it is required to establish a regression model for 3 different forecast variables. The method I followed to predict these three variables is similar, but an attempt was made to choose the independent variables added in the final version of the regression models in a way that they were different from each other and were in relationship with the variables that were desired to be predicted.
+
+All three models were started by finding the trend of the variable to be predicted. Afterwards, the seeasonality dummy variable was added to all of these variables to eliminate seasonality.
+
+The first regression model tries to predict the "Dollar Excahnge Rate" using the "Consumer Price Index". It can be seen that the model built using only seasonality and trend without adding an independent varible has an R squared value of 0.74. However, it could not predict the values above the average, especially in the last section, and as can be seen from the acf, these model error data points are not independent of each other. In the model built after adding the "Consumer Price Index" predictor variables next to Seasonality and Trend, it is seen that R squared increased to 0.98 and reached a satisfactory level, but as can be seen from the ACF, the errors are dependent on each other. As a result, it can be said that the model established using "Consumer Price Index", seasonality and trend is at a good level to predict "Dollar Exchange Rate".To add another comment about this model, it can be said that thanks to the determination of the dollar value of the goods that make up the "consumer price index", there is a causation relationship between these two variables and, as can be understood from the correlation of these two variables, they are ideal for predicting each other.
+
+In the second regression model, it tries to predict "Unemployment Rate" using "Employment Rate". It can be seen that the model built by using only seasonality and trend without adding an independent variable has a very low R squared value of 0.02. Especially in some sections, it has high error values that are far from the real value. Moreover, as can be seen from the acf, these model error data points are not independent from each other. In the model built after adding the "Employment Rate" predictor variables next to Seasonality and Trend, it is seen that R squared increased to 0.62 and reached an acceptable level, but as can be seen from the ACF, the errors are dependent on each other. As a result, it cannot be said that the model established using "Employment Rate", seasonality and trend is at a good level to predict the "Unemployment Rate". To make an addition at this point, even though at first glance it is thought that these two values are very related to each other and that a perfect model will be established, the definitions of these two terms have been changed by the institutions in order to provide a positive image for example that people who are not looking for a job are not included in the Unemployment Rate and the main factor in the Employment Rate is retirement. Therefore good model could not be established.
+
+In the third and last regression model, it tries to predict "Gold production of mining companies traded on BIST" using "Accessory Gold Demand of Consumers". It can be seen that the model built by using only seasonality and trend without adding an independent variable has a low R squared value of 0.328. This model could not capture the fluctuations in some parts of the real value, and this reduced the R squared value. Moreover, as can be seen from the acf, these model error data points are not independent of each other. After adding the "Accessory Gold Demand of Consumers" predictor variables next to Seasonality and Trend, it is seen that R squared decreased to 0.325 in the model built. As can be understood from here, the predictor variable was not selected correctly. When choosing this predictor, it was thought that domestic consumption would reflect gold production, but while domestic demand decreased, especially due to the problems in the domestic economy, production continued to increase (albeit not regularly) with foreign demand. As a result, it can be said that this model is an unsuccessful regression model for forecasting.
+
