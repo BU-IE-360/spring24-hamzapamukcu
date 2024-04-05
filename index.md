@@ -1,15 +1,9 @@
-## Welcome to GitHub Pages
+## Welcome to Hamza Pamukcu's GitHub Pages
 
-You can use the editor on GitHub to maintain and preview the content for your website in Markdown files.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
-### Markdown
+* [IE 360 HW1 HTML]([[https://bu-ie-360.github.io/spring24-abdullahkayacan-boun/files/R_Markdown_Example_in_RStudio.html](https://github.com/BU-IE-360/spring24-hamzapamukcu/blob/main/IE%20360%20HW1/Hamza-Pamuk%C3%A7u-HW1.html)](https://github.com/BU-IE-360/spring24-hamzapamukcu/blob/main/IE%20360%20HW1/Hamza-Pamuk%C3%A7u-HW1.html)): (https://github.com/BU-IE-360/spring24-hamzapamukcu/blob/main/IE%20360%20HW1/Hamza-Pamuk%C3%A7u-HW1.html)
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
 
 # Header 1
 ## Header 2
