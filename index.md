@@ -11,4 +11,11 @@ My name is Hamza and this is my page for the course IE360. My homeworks and my p
 
 ### Project
 [Project Report](https://bu-ie-360.github.io/spring24-hamzapamukcu/Projecte.html)
+
 [Project R Code](https://bu-ie-360.github.io/spring24-hamzapamukcu/Projecte.Rmd)
+
+[Finding Optimal Arima Sarima Code](https://bu-ie-360.github.io/spring24-hamzapamukcu/Finding%20optimal%20Sarima%20Arima%20code.Rmd)
+
+[Arima Sarima Prediction Html](https://bu-ie-360.github.io/spring24-hamzapamukcu/sarima-arima-.html)
+
+[Arima Sarima Prediction R Code](https://bu-ie-360.github.io/spring24-hamzapamukcu/sarima%20arima%20.rmd)
