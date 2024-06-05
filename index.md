@@ -10,5 +10,5 @@ My name is Hamza and this is my page for the course IE360. My homeworks and my p
 [My First PDF Html File](https://bu-ie-360.github.io/spring24-hamzapamukcu/Hamza-Pamukçu-HW1.pdf)
 
 ### Project
-[Project Report](https://bu-ie-360.github.io/spring24-hamzapamukcu/Hamza-Pamukçu-HW1.html)
+[Project Report](https://bu-ie-360.github.io/spring24-hamzapamukcu/Projecte.html)
 
